@@ -1,6 +1,6 @@
 # HomeBreweryWebApi
 
-It is an ASP.NET Web Api for the home brewing system.
+It is an ASP.NET Core Web Api for the home brewing system.
 It allows you to search for recipes in library, read them, buy or save some recipes.
 Fontend is a Flutter website.
 Website repo: https://github.com/al-koles/home_brewery.git
