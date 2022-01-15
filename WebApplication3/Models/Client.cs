@@ -10,13 +10,11 @@ namespace WebApplication3.Models
         public Client()
         {
             ClientRecipes = new HashSet<ClientRecipe>();
-            Samples = new HashSet<Sample>();
         }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         public string Email { get; set; }
 
         public virtual ICollection<ClientRecipe> ClientRecipes { get; set; }
-        public virtual ICollection<Sample> Samples { get; set; }
     }
 }

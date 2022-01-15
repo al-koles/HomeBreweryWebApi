@@ -32,7 +32,7 @@ namespace WebApplication3.Controllers
 
         // GET: api/ClientRecipes/5
         [HttpGet("{clientId}, {recipeId}")]
-        public ClientRecipe GetClientRecipe(int clientId, int recipeId)
+        public ClientRecipe GetClientRecipe(string clientId, int recipeId)
         {
             var clientRecipe = _context.ClientRecipes.Where(p => p.ClientId == clientId && p.RecipeId == recipeId).ToList();
 
@@ -47,7 +47,7 @@ namespace WebApplication3.Controllers
         // PUT: api/ClientRecipes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{clientId}, {recipeId}")]
-        public async Task<IActionResult> PutClientRecipe(int clientId, int recipeId, ClientRecipe clientRecipe)
+        public async Task<IActionResult> PutClientRecipe(string clientId, int recipeId, ClientRecipe clientRecipe)
         {
             clientRecipe.ClientId = clientId;
             clientRecipe.RecipeId = recipeId;
@@ -104,7 +104,7 @@ namespace WebApplication3.Controllers
 
         // DELETE: api/ClientRecipes/5
         [HttpDelete("{clientId}, {recipeId}")]
-        public async Task<IActionResult> DeleteClientRecipe(int clientId, int recipeId)
+        public async Task<IActionResult> DeleteClientRecipe(string clientId, int recipeId)
         {
             var clientRecipe = _context.ClientRecipes.Where(p => p.ClientId == clientId && p.RecipeId == recipeId).ToList();
             if (clientRecipe == null)
@@ -119,8 +119,8 @@ namespace WebApplication3.Controllers
         }
 
         // GET: api/GetRecipesOfClientId/2
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesOfClientId(int clientId)
+        [HttpGet("{clientId}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesOfClientId(string clientId)
         {
             return await (from clientRecipe in _context.ClientRecipes
                           join recipe in _context.Recipes on clientRecipe.RecipeId equals recipe.RecipeId
@@ -129,7 +129,19 @@ namespace WebApplication3.Controllers
                           select recipe).ToListAsync();
         }
 
-        private bool ClientRecipeExists(int clientId, int recipeId)
+        [HttpGet("{clientId}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetAvailableRecipesForClientId(string clientId)
+        {
+            var res = await _context.Recipes.Except(
+                from clientRecipe in _context.ClientRecipes
+                join recipe in _context.Recipes on clientRecipe.RecipeId equals recipe.RecipeId
+                where clientRecipe.ClientId == clientId
+                select recipe).ToListAsync();
+
+            return res;
+        }
+
+        private bool ClientRecipeExists(string clientId, int recipeId)
         {
             return _context.ClientRecipes.Any(e => e.ClientId == clientId && e.RecipeId == recipeId);
         }

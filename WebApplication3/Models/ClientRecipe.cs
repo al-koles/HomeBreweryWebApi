@@ -12,7 +12,7 @@ namespace WebApplication3.Models
             Attempts = new HashSet<Attempt>();
         }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         public int RecipeId { get; set; }
 
         public virtual Client Client { get; set; }

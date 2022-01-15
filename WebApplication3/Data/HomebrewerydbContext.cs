@@ -24,7 +24,6 @@ namespace WebApplication3.Data
         public virtual DbSet<ClientRecipe> ClientRecipes { get; set; }
         public virtual DbSet<Picture> Pictures { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
-        public virtual DbSet<Sample> Samples { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,17 +44,19 @@ namespace WebApplication3.Data
 
                 entity.Property(e => e.AttemptId).HasColumnName("attempt_id");
 
-                entity.Property(e => e.ClientId).HasColumnName("client_id");
+                entity.Property(e => e.ClientId)
+                    .HasMaxLength(30)
+                    .HasColumnName("client_id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
                 entity.Property(e => e.ConfigLink)
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .HasColumnName("configLink");
 
-                entity.Property(e => e.FinishDate)
+                entity.Property(e => e.EndDate)
                     .HasColumnType("date")
-                    .HasColumnName("finishDate");
+                    .HasColumnName("endDate");
 
                 entity.Property(e => e.StartDate)
                     .HasColumnType("date")
@@ -71,7 +72,9 @@ namespace WebApplication3.Data
             {
                 entity.ToTable("Client");
 
-                entity.Property(e => e.ClientId).HasColumnName("client_id");
+                entity.Property(e => e.ClientId)
+                    .HasMaxLength(30)
+                    .HasColumnName("client_id");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -85,7 +88,9 @@ namespace WebApplication3.Data
 
                 entity.ToTable("ClientRecipe");
 
-                entity.Property(e => e.ClientId).HasColumnName("client_id");
+                entity.Property(e => e.ClientId)
+                    .HasMaxLength(30)
+                    .HasColumnName("client_id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
@@ -97,6 +102,7 @@ namespace WebApplication3.Data
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.ClientRecipes)
                     .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ClientRecipe_Recipe");
             });
 
@@ -152,28 +158,6 @@ namespace WebApplication3.Data
                 entity.Property(e => e.Price)
                     .HasColumnType("money")
                     .HasColumnName("price");
-            });
-
-            modelBuilder.Entity<Sample>(entity =>
-            {
-                entity.HasKey(e => new { e.SampleId, e.ClientId });
-
-                entity.ToTable("Sample");
-
-                entity.Property(e => e.SampleId).HasColumnName("sample_id");
-
-                entity.Property(e => e.ClientId).HasColumnName("client_id");
-
-                entity.Property(e => e.DateTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("dateTime");
-
-                entity.Property(e => e.TemperatureC).HasColumnName("temperatureC");
-
-                entity.HasOne(d => d.Client)
-                    .WithMany(p => p.Samples)
-                    .HasForeignKey(d => d.ClientId)
-                    .HasConstraintName("FK_Sample_Client");
             });
 
             OnModelCreatingPartial(modelBuilder);

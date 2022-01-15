@@ -45,7 +45,7 @@ namespace WebApplication3.Controllers
         // PUT: api/Clients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClient(int id, Client client)
+        public async Task<IActionResult> PutClient(string id, Client client)
         {
             client.ClientId = id;
             _context.Entry(client).State = EntityState.Modified;
@@ -96,7 +96,7 @@ namespace WebApplication3.Controllers
             return NoContent();
         }
 
-        private bool ClientExists(int id)
+        private bool ClientExists(string id)
         {
             return _context.Clients.Any(e => e.ClientId == id);
         }

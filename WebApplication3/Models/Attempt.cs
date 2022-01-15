@@ -8,11 +8,11 @@ namespace WebApplication3.Models
     public partial class Attempt
     {
         public int AttemptId { get; set; }
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         public int RecipeId { get; set; }
         public string ConfigLink { get; set; }
         public DateTime? StartDate { get; set; }
-        public DateTime? FinishDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public virtual ClientRecipe ClientRecipe { get; set; }
     }

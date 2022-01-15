@@ -32,10 +32,6 @@
       {
          "Name": "[dbo].[Recipe]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Sample]",
-         "ObjectType": 0
       }
    ],
    "UiHint": "ALEXEYDESKTOP\\SQLEXPRESS.HomeBreweryDB",

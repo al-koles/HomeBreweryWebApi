@@ -32,7 +32,7 @@ namespace WebApplication3.Controllers
 
         // GET: api/Attempts/5
         [HttpGet("{attemptId}, {clientId}, {recipeId}")]
-        public Attempt GetAttempt(int attemptId, int clientId, int recipeId)
+        public Attempt GetAttempt(int attemptId, string clientId, int recipeId)
         {
             var attempt = _context.Attempts.Where(
                 p => p.AttemptId == attemptId && 
@@ -51,7 +51,7 @@ namespace WebApplication3.Controllers
         // PUT: api/Attempts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{attemptId}, {clientId}, {recipeId}")]
-        public async Task<IActionResult> PutAttempt(int attemptId, int clientId, int recipeId, Attempt attempt)
+        public async Task<IActionResult> PutAttempt(int attemptId, string clientId, int recipeId, Attempt attempt)
         {
             attempt.AttemptId = attemptId;
             attempt.ClientId = clientId;
@@ -115,7 +115,7 @@ namespace WebApplication3.Controllers
 
         // DELETE: api/Attempts/5
         [HttpDelete("{attemptId}")]
-        public async Task<IActionResult> DeleteAttempt(int attemptId, int clientId, int recipeId)
+        public async Task<IActionResult> DeleteAttempt(int attemptId, string clientId, int recipeId)
         {
             var attempt = _context.Attempts.Where(
                 p => p.AttemptId == attemptId &&
@@ -133,7 +133,7 @@ namespace WebApplication3.Controllers
             return NoContent();
         }
 
-        private bool AttemptExists(int attemptId, int clientId, int recipeId)
+        private bool AttemptExists(int attemptId, string clientId, int recipeId)
         {
             return _context.Attempts.Any(
                 p => p.AttemptId == attemptId &&
@@ -141,7 +141,7 @@ namespace WebApplication3.Controllers
                 p.RecipeId == recipeId);
         }
 
-        private int GetNextAttemptId(int clientId, int recipeId)
+        private int GetNextAttemptId(string clientId, int recipeId)
         {
             var res = (from p in _context.Attempts
                        where p.ClientId == clientId && p.RecipeId == recipeId
